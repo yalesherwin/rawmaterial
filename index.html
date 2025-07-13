@@ -2,33 +2,247 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>热卷实时价格 - 看盘系统</title>
+  <title>CHINACNU 彩涂卷交易系统</title>
+  <meta name="viewport" content="width=800"/>
   <style>
     body {
-      font-family: "Microsoft YaHei", sans-serif;
-      background: #f0f4f7;
-      text-align: center;
-      padding: 50px;
+      margin: 0;
+      padding: 0;
+      background: #181c25;
+      color: #f2f3f7;
+      font-family: "Microsoft YaHei", 'Segoe UI', 'Roboto', Arial, sans-serif;
+      min-height: 100vh;
     }
-    h1 { color: #333; }
-    .price-box {
-      font-size: 2em;
+    .header {
+      background: linear-gradient(90deg,#262c39 60%,#1e2530);
+      display: flex;
+      align-items: center;
+      padding: 0 36px;
+      height: 64px;
+      box-shadow: 0 2px 12px #10131a88;
+      letter-spacing: 1.5px;
+    }
+    .logo {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #1ecb98;
+      margin-right: 22px;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 12px #1ecb9888;
+    }
+    .subtitle {
+      font-size: 1.2em;
+      color: #b0bac9;
+      margin-left: 8px;
+    }
+    .main {
+      display: flex;
+      flex-direction: row;
+      max-width: 900px;
+      margin: 36px auto 0 auto;
+      box-shadow: 0 6px 40px #0c101b99;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #23293a;
+      min-height: 500px;
+    }
+    .market {
+      flex: 2.1;
+      padding: 38px 28px;
+      background: #202534;
+      border-right: 1px solid #273047;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .market-title {
+      font-size: 1.8em;
+      color: #6fe4bf;
+      margin-bottom: 28px;
+      font-weight: bold;
+    }
+    .market-price {
+      font-size: 3.3em;
+      color: #ff436a;
+      font-weight: bold;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 24px #ff436a33;
+    }
+    .market-info {
+      font-size: 1.1em;
+      margin-bottom: 18px;
+      color: #b6c3de;
+    }
+    .market-bar {
+      display: flex;
+      gap: 36px;
+      font-size: 1.05em;
+      margin-bottom: 10px;
+      color: #bbb;
+    }
+    .market-bar span {
+      display: inline-block;
+      min-width: 95px;
+    }
+    .market-time {
       margin-top: 30px;
-      color: #e53935;
+      font-size: 0.98em;
+      color: #8a99b3;
+      letter-spacing: 2px;
     }
-    .time-box {
-      margin-top: 10px;
-      font-size: 1em;
-      color: #666;
+    .trade {
+      flex: 1.2;
+      padding: 40px 28px;
+      background: #242a38;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .trade-title {
+      font-size: 1.45em;
+      color: #ffde56;
+      margin-bottom: 26px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+    }
+    .trade-row {
+      margin-bottom: 18px;
+      width: 100%;
+      font-size: 1.1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .trade-row label {
+      color: #7f8eac;
+      min-width: 96px;
+      display: inline-block;
+    }
+    .trade-row input[type="number"] {
+      width: 60px;
+      font-size: 1.08em;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid #2f3750;
+      background: #212733;
+      color: #fff;
+      outline: none;
+      margin-left: 10px;
+    }
+    .trade-btns {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .trade-btn {
+      padding: 8px 30px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1.18em;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(90deg,#ff3e69 60%,#f90043);
+      cursor: pointer;
+      box-shadow: 0 2px 12px #ff3e6922;
+      transition: background 0.18s;
+      letter-spacing: 1px;
+    }
+    .trade-btn:active { background: #b71c1c; }
+    .trade-btn.sell {
+      background: linear-gradient(90deg,#1ecb98 60%,#03b986);
+      box-shadow: 0 2px 10px #1ecb9830;
+    }
+    .trade-info {
+      font-size: 1.09em;
+      color: #bfccea;
+      margin-top: 12px;
+      margin-bottom: 5px;
+    }
+    .trade-pl {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #f7d04a;
+      margin-bottom: 6px;
+      text-shadow: 0 1px 6px #f7d04a33;
+    }
+    @media (max-width: 900px) {
+      .main { flex-direction: column; max-width: 99vw; }
+      .market, .trade { min-width: 240px; padding: 24px 7vw; }
+      .market-title { font-size: 1.25em; }
+      .market-price { font-size: 2em; }
+      .trade-title { font-size: 1.15em; }
     }
   </style>
 </head>
 <body>
-  <h1>🔥 热卷主力实时价格</h1>
-  <div class="price-box" id="price">加载中...</div>
-  <div class="time-box" id="time"></div>
-
+  <div class="header">
+    <span class="logo">CHINACNU</span>
+    <span class="subtitle">PPGI TRADING SYSTERM </span>
+  </div>
+  <div class="main">
+    <div class="market">
+      <div class="market-title">PPGI PRICE（彩涂实时价）</div>
+      <div class="market-price" id="price">——</div>
+      <div class="market-info" id="name">——</div>
+      <div class="market-bar">
+        <span>今开：<b id="open">-</b></span>
+        <span>最高：<b id="high">-</b></span>
+        <span>最低：<b id="low">-</b></span>
+      </div>
+      <div class="market-bar">
+        <span>昨收：<b id="preclose">-</b></span>
+        <span>成交量：<b id="vol">-</b></span>
+        <span>成交额：<b id="amount">-</b></span>
+      </div>
+      <div class="market-time" id="time">更新时间：--:--:--</div>
+    </div>
+    <div class="trade">
+      <div class="trade-title">交易中心</div>
+      <div class="trade-row">
+        <label>账户余额</label>
+        <span id="balance">6585213</span> 美元
+      </div>
+      <div class="trade-row">
+        <label>持仓手数</label>
+        <span id="position">0</span> 手
+      </div>
+      <div class="trade-row">
+        <label>持仓均价</label>
+        <span id="avgprice">0</span>
+      </div>
+      <div class="trade-row">
+        <label>手数</label>
+        <input type="number" id="qty" min="1" max="100" value="1" />
+      </div>
+      <div class="trade-btns">
+        <button class="trade-btn" onclick="buy()">买入</button>
+        <button class="trade-btn sell" onclick="sell()">卖出</button>
+      </div>
+      <div class="trade-info">
+        <span class="trade-pl">浮动盈亏：<span id="pl">0</span> 元</span>
+      </div>
+    </div>
+  </div>
   <script>
+    let lastPrice = 0;
+    let balance = Number(localStorage.balance) || 100000;
+    let position = Number(localStorage.position) || 0;
+    let avgprice = Number(localStorage.avgprice) || 0;
+
+    function updatePanel() {
+      document.getElementById("balance").innerText = balance.toFixed(2);
+      document.getElementById("position").innerText = position;
+      document.getElementById("avgprice").innerText = avgprice ? avgprice.toFixed(2) : 0;
+      let pl = 0;
+      if (position !== 0 && lastPrice) {
+        pl = (lastPrice - avgprice) * position * 10;
+      }
+      document.getElementById("pl").innerText = pl.toFixed(2);
+    }
+
     async function getPrice() {
       try {
         const proxy = 'https://bold-firefly-c84c.head-6c9.workers.dev/';
@@ -36,22 +250,64 @@
         const text = await res.text();
         const parts = text.split(',');
         const name = parts[0].split('="')[1];
-        const now = parts[3];
+        const now = Number(parts[3]);
         const high = parts[4];
         const low = parts[5];
         const open = parts[2];
+        const preclose = parts[1];
+        const vol = parts[8] || '-';
+        const amount = parts[9] || '-';
 
-        document.getElementById("price").innerText = `${name} 当前价：${now} 元/吨`;
-        document.getElementById("time").innerText =
-          `今开：${open}，最高：${high}，最低：${low}，更新时间：` + new Date().toLocaleTimeString();
+        lastPrice = now;
+        document.getElementById("price").innerText = now ? now + " 元/吨" : '——';
+        document.getElementById("name").innerText = name || '——';
+        document.getElementById("open").innerText = open || '-';
+        document.getElementById("high").innerText = high || '-';
+        document.getElementById("low").innerText = low || '-';
+        document.getElementById("preclose").innerText = preclose || '-';
+        document.getElementById("vol").innerText = vol;
+        document.getElementById("amount").innerText = amount;
+        document.getElementById("time").innerText = "更新时间：" + new Date().toLocaleTimeString();
+        updatePanel();
       } catch (err) {
         document.getElementById("price").innerText = "加载失败";
-        console.error(err);
+        document.getElementById("name").innerText = '';
       }
     }
 
+    function buy() {
+      let qty = Number(document.getElementById('qty').value) || 1;
+      if (!lastPrice) { alert('请等待价格加载'); return; }
+      let cost = lastPrice * 10 * qty;
+      if (balance < cost) { alert('余额不足'); return; }
+      let totalQty = position + qty;
+      avgprice = ((avgprice * position) + (lastPrice * qty)) / totalQty;
+      position += qty;
+      balance -= cost;
+      saveState();
+      updatePanel();
+    }
+
+    function sell() {
+      let qty = Number(document.getElementById('qty').value) || 1;
+      if (!lastPrice) { alert('请等待价格加载'); return; }
+      if (position < qty) { alert('持仓不足'); return; }
+      balance += lastPrice * 10 * qty;
+      position -= qty;
+      if (position === 0) avgprice = 0;
+      saveState();
+      updatePanel();
+    }
+
+    function saveState() {
+      localStorage.balance = balance;
+      localStorage.position = position;
+      localStorage.avgprice = avgprice;
+    }
+
     getPrice();
-    setInterval(getPrice, 10000); // 每10秒更新
+    setInterval(getPrice, 10000);
+    updatePanel();
   </script>
 </body>
 </html>
