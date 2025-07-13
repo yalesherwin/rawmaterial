@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>热卷实时价格 - 看盘系统</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f0f4f7;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 { color: #333; }
+    .price-box {
+      font-size: 2em;
+      margin-top: 30px;
+      color: #e53935;
+    }
+    .time-box {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔥 热卷主力实时价格</h1>
+  <div class="price-box" id="price">加载中...</div>
+  <div class="time-box" id="time"></div>
+
+  <script>
+    async function getPrice() {
+      try {
+        const proxy = 'https://bold-firefly-c84c.head-6c9.workers.dev/';
+        const res = await fetch(proxy);
+        const text = await res.text();
+        const parts = text.split(',');
+        const name = parts[0].split('="')[1];
+        const now = parts[3];
+        const high = parts[4];
+        const low = parts[5];
+        const open = parts[2];
+
+        document.getElementById("price").innerText = `${name} 当前价：${now} 元/吨`;
+        document.getElementById("time").innerText =
+          `今开：${open}，最高：${high}，最低：${low}，更新时间：` + new Date().toLocaleTimeString();
+      } catch (err) {
+        document.getElementById("price").innerText = "加载失败";
+        console.error(err);
+      }
+    }
+
+    getPrice();
+    setInterval(getPrice, 10000); // 每10秒更新
+  </script>
+</body>
+</html>
